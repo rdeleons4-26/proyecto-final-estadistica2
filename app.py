@@ -4,82 +4,52 @@ import matplotlib.pyplot as plt
 from scipy.stats import chi2
 
 # Configuración de diseño de la página
-st.set_page_config(page_title="App Chi-Cuadrada", layout="centered")
+st.set_page_config(page_title="App Chi-Cuadrada Avanzada", layout="centered")
 
 st.title("📊 App de Prueba de Hipótesis: Chi-cuadrada ($\chi^2$)")
-st.write("Calculadora automatizada basada en frecuencias observadas ($f_o$) y esperadas ($f_e$).")
+st.write("Calculadora universal basada en frecuencias observadas ($f_o$) y esperadas ($f_e$).")
 
-st.info("💡 Los datos precargados corresponden al ejemplo de clase (Masculino/Femenino). ¡Puedes cambiarlos por los de cualquier otro problema!")
+# --- SELECCIÓN DEL TAMAÑO DE LA TABLA ---
+st.subheader("🛠️ Configuración del Cuadro de Contingencia")
 
-# --- ENTRADA DE DATOS (Frecuencias Observadas) ---
-st.subheader("1. Ingresa las Frecuencias Observadas ($f_o$)")
-
-col1, col2 = st.columns(2)
-with col1:
-    fo_11 = st.number_input("Fila 1, Columna 1 (ej. Masculino - Técnicas)", value=36)
-    fo_21 = st.number_input("Fila 2, Columna 1 (ej. Femenino - Técnicas)", value=26)
-with col2:
-    fo_12 = st.number_input("Fila 1, Columna 2 (ej. Masculino - Humanística)", value=52)
-    fo_22 = st.number_input("Fila 2, Columna 2 (ej. Femenino - Humanística)", value=86)
+col_dim1, col_dim2 = st.columns(2)
+with col_dim1:
+    filas = st.number_input("Número de Filas (Categorías de Variable 1)", min_value=2, max_value=10, value=2, step=1)
+with col_dim2:
+    columnas = st.number_input("Número de Columnas (Categorías de Variable 2)", min_value=2, max_value=10, value=2, step=1)
 
 # Selector dinámico para el Nivel de Significancia (el 0.05 de tu cuaderno)
 alfa = st.slider("Selecciona el Nivel de Significancia ($\\alpha$)", min_value=0.01, max_value=0.10, value=0.05, step=0.01)
 
-# Construcción de la matriz con los datos del usuario
-fo = np.array([[fo_11, fo_12], [fo_21, fo_22]])
+# --- ENTRADA DE DATOS DINÁMICA ---
+st.subheader("1. Ingresa las Frecuencias Observadas ($f_o$)")
+st.write("Escribe los valores de tu tabla en las casillas de abajo:")
 
-# --- PROCESAMIENTO MATEMÁTICO (La fórmula de tu cuaderno) ---
-totales_filas = fo.sum(axis=1)
-totales_columnas = fo.sum(axis=0)
-n = fo.sum()
+# Crear una matriz de entradas numéricas dinámicas
+datos_fo = []
+for i in range(int(filas)):
+    fila_inputs = st.columns(int(columnas))
+    valores_fila = []
+    for j in range(int(columnas)):
+        # Valores por defecto para que no aparezca vacía (ejemplo 2x2 de clase)
+        val_defecto = 0
+        if filas == 2 and columnas == 2:
+            matriz_defecto = [[36, 52], [26, 86]]
+            val_defecto = matriz_defecto[i][j]
+        elif filas == 2 and columnas == 3:
+            # Ejemplo 2 del cuaderno (3 años, 4 años, 5 años)
+            matriz_defecto = [[20, 19, 15], [10, 16, 35]]
+            val_defecto = matriz_defecto[i][j]
+            
+        val = fila_inputs[j].number_input(f"Fila {i+1}, Col {j+1}", value=val_defecto, key=f"fo_{i}_{j}")
+        valores_fila.append(val)
+    datos_fo.append(valores_fila)
 
-# 1. Calcular frecuencias esperadas: fe = (total fila * total columna) / n
-fe = np.outer(totales_filas, totales_columnas) / n
+# Convertir a matriz de Numpy
+fo = np.array(datos_fo)
 
-# 2. Aplicar tu fórmula universal: Σ [ (fo - fe)^2 / fe ]
-chi2_calculado = np.sum((fo - fe)**2 / fe)
-
-# 3. Grados de libertad: gl = (C-1)*(F-1)
-filas, columnas = fo.shape
-gl = (columnas - 1) * (filas - 1)
-
-# 4. Búsqueda automática del Valor Crítico en la tabla interna de Python
-valor_critico = chi2.ppf(1 - alfa, gl)
-
-# --- MOSTRAR RESULTADOS Y CONCLUSIÓN ---
-st.subheader("2. Resultados del Análisis Estadístico")
-
-c1, c2, c3 = st.columns(3)
-c1.metric("$\\chi^2$ Calculado", f"{chi2_calculado:.2f}")
-c2.metric("Valor Crítico (Tabla)", f"{valor_critico:.2f}")
-c3.metric("Grados de Libertad ($gl$)", f"{gl}")
-
-# Criterio de decisión automático
-st.subheader("3. Conclusión de la Hipótesis")
-if chi2_calculado > valor_critico:
-    st.error(f"❌ **Se rechaza la Hipótesis Nula ($H_0$).** El valor calculado ({chi2_calculado:.2f}) es MAYOR que el valor crítico de la tabla ({valor_critico:.2f}). Las variables NO son independientes; existe una relación significativa entre ellas.")
+# Validar que los datos no sean todos ceros para evitar errores matemáticos
+if fo.sum() == 0:
+    st.warning("⚠️ Por favor introduce valores mayores a cero en la tabla para realizar los cálculos.")
 else:
-    st.success(f"✅ **No se rechaza la Hipótesis Nula ($H_0$).** El valor calculado ({chi2_calculado:.2f}) es MENOR o IGUAL que el valor crítico de la tabla ({valor_critico:.2f}). Las variables son independientes.")
-
-# --- GRÁFICA DE LA DISTRIBUCIÓN ---
-st.subheader("4. Visualización Gráfica")
-x = np.linspace(0, valor_critico + 5, 1000)
-y = chi2.pdf(x, gl)
-
-fig, ax = plt.subplots(figsize=(10, 4))
-ax.plot(x, y, color='purple', lw=2, label=f'Curva de Distribución $\chi^2$ (gl = {gl})')
-
-# Sombreado de la región de rechazo basada en el alfa
-x_rechazo = np.linspace(valor_critico, valor_critico + 5, 100)
-ax.fill_between(x_rechazo, chi2.pdf(x_rechazo, gl), color='red', alpha=0.3, label=f'Región de Rechazo ($\\alpha$ = {alfa})')
-
-# Línea guía que muestra dónde cayó nuestro cálculo
-ax.axvline(chi2_calculado, color='blue', linestyle='--', lw=2, label=f'Tu $\chi^2$ Calculado = {chi2_calculado:.2f}')
-
-ax.set_title("Ubicación del Estadístico y Región de Rechazo", fontsize=14)
-ax.set_xlabel("Valor de $\chi^2$")
-ax.set_ylabel("Densidad de Probabilidad")
-ax.legend()
-ax.grid(True, alpha=0.2)
-
-st.pyplot(fig)
+    # --- PROCESAM
