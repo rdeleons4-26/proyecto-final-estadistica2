@@ -159,7 +159,6 @@ else:
         # Chi calculado
         ax.axvline(chi2_calculado, color='#555555', linestyle='--', lw=2, label=f'Tu $\chi^2$ Calculado = {chi2_calculado:.2f}')
 
-        ax.set_title("Ubicación del Estadístico y Región de Rechazo", fontsize=12, color='#6c1d45', family='serif')
         ax.set_xlabel("Valor de $\chi^2$")
         ax.set_ylabel("Densidad de Probabilidad")
         ax.legend(facecolor='white', frameon=True)
