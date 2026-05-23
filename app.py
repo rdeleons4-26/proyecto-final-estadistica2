@@ -1,39 +1,57 @@
+
+RITA SHANTAL DE LEON SANCHEZ <rdeleons4@miumg.edu.gt>
+17:11 (hace 0 minutos)
+para mí
+
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import chi2
 
-# Configuración del diseño de la página con el título de pestaña limpio
-st.set_page_config(page_title="Prueba de Hipótesis Chi-cuadrada", layout="centered")
+# Configuración del diseño de la página con el título de pestaña impecable
+st.set_page_config(page_title="Prueba de Hipótesis con Chi-cuadrada", layout="centered")
 
-# Inyección de CSS para estilo de alta gama inspirado en la paleta de la imagen
+# Inyección de CSS para la tipografía premium y paleta Rare Beauty
 st.markdown("""
     <style>
+    /* Importar tipografía de alta gama desde Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap');
+
     /* Fondo blanco puro */
     .main {
         background-color: #ffffff;
     }
     
-    /* Título centrado con tipografía elegante tipo Serif y tamaño más grande */
-    .titulo-centrado {
+    /* Título principal centrado y estilizado con tipografía de pasarela */
+    .titulo-premium {
         color: #6c1d45;
-        font-family: 'Georgia', 'Times New Roman', serif;
-        font-weight: normal;
+        font-family: 'Playfair Display', 'Didot', 'Georgia', serif;
+        font-weight: 400;
         text-align: center;
-        font-size: 2.8rem; /* Letra más grande para el título principal */
-        margin-top: 25px;
+        font-size: 2.8rem;
+        margin-top: 30px;
         margin-bottom: 25px;
         line-height: 1.2;
     }
+
+    /* Subtítulos de secciones como Visualización Gráfica centrados */
+    .subtitulo-centrado {
+        color: #6c1d45;
+        font-family: 'Playfair Display', 'Didot', 'Georgia', serif;
+        text-align: center;
+        font-size: 1.8rem;
+        margin-top: 35px;
+        margin-bottom: 20px;
+    }
     
-    /* Estilos para encabezados de secciones */
+    /* Estilos para encabezados de bloques de configuración */
     h3 {
         color: #6c1d45;
         font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
         font-weight: 500;
     }
     
-    /* Tarjetas de resultados métricos limpias */
+    /* Tarjetas de resultados métricos ultra limpias */
     .stMetric {
         background-color: #ffffff;
         padding: 12px;
@@ -44,8 +62,8 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# Título maquetado con HTML puro (usando el código correcto para mostrar el símbolo de Chi-cuadrada)
-st.markdown('<div class="titulo-centrado">Prueba de Hipótesis Chi-cuadrada (&chi;&sup2;)</div>', unsafe_allow_html=True)
+# Título de alta gama maquetado en HTML puro
+st.markdown('<div class="titulo-premium">Prueba de Hipótesis Chi-cuadrada (&chi;&sup2;)</div>', unsafe_allow_html=True)
 st.write("Calculadora universal basada en frecuencias observadas ($f_o$) y esperadas ($f_e$).")
 
 # --- SELECCIÓN DEL TAMAÑO DE LA TABLA ---
@@ -129,7 +147,7 @@ else:
             st.success(f"No se rechaza la Hipótesis Nula ($H_0$). El valor calculado ({chi2_calculado:.2f}) es MENOR o IGUAL que el valor crítico de la tabla ({valor_critico:.2f}). Las variables son independientes.")
 
         # --- GRÁFICA DE LA DISTRIBUCIÓN ---
-        st.subheader("Visualización Gráfica")
+        st.markdown('<div class="subtitulo-centrado">Visualización Gráfica</div>', unsafe_allow_html=True)
         limite_x = float(max(valor_critico + 5, chi2_calculado + 5, 15))
         x = np.linspace(0, limite_x, 1000)
         y = chi2.pdf(x, gl)
@@ -162,4 +180,3 @@ else:
         ax.spines['bottom'].set_color('#cccccc')
 
         st.pyplot(fig)
-
