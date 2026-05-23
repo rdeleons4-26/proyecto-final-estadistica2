@@ -44,8 +44,8 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# Título maquetado con HTML para poder centrarlo, agrandarlo y aplicar la fuente Serif
-st.markdown('<div class="titulo-centrado">Aplicación: Prueba de Hipótesis Chi-cuadrada ($\chi^2$)</div>', unsafe_allow_html=True)
+# Título maquetado con HTML puro (usando el código correcto para mostrar el símbolo de Chi-cuadrada)
+st.markdown('<div class="titulo-centrado">Aplicación: Prueba de Hipótesis Chi-cuadrada (&chi;&sup2;)</div>', unsafe_allow_html=True)
 st.write("Calculadora universal basada en frecuencias observadas ($f_o$) y esperadas ($f_e$).")
 
 # --- SELECCIÓN DEL TAMAÑO DE LA TABLA ---
