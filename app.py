@@ -1,15 +1,10 @@
-
-RITA SHANTAL DE LEON SANCHEZ <rdeleons4@miumg.edu.gt>
-17:11 (hace 0 minutos)
-para mí
-
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import chi2
 
 # Configuración del diseño de la página con el título de pestaña impecable
-st.set_page_config(page_title="Prueba de Hipótesis con Chi-cuadrada", layout="centered")
+st.set_page_config(page_title="Prueba de Hipótesis Chi-cuadrada", layout="centered")
 
 # Inyección de CSS para la tipografía premium y paleta Rare Beauty
 st.markdown("""
