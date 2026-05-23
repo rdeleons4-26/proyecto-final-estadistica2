@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from scipy.stats import chi2
 
 # Configuración del diseño de la página con el título de pestaña limpio
-st.set_page_config(page_title="Aplicación: Prueba de Hipótesis Chi-cuadrada", layout="centered")
+st.set_page_config(page_title="Prueba de Hipótesis Chi-cuadrada", layout="centered")
 
 # Inyección de CSS para estilo de alta gama inspirado en la paleta de la imagen
 st.markdown("""
