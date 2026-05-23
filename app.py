@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from scipy.stats import chi2
 
 # Configuración del diseño de la página con el título de pestaña limpio
-st.set_page_config(page_title="Análisis de Datos: Prueba Chi-cuadrado", layout="centered")
+st.set_page_config(page_title="Aplicación: Prueba de Hipótesis Chi-cuadrada", layout="centered")
 
 # Inyección de CSS para estilo de alta gama inspirado en la paleta de la imagen
 st.markdown("""
@@ -14,24 +14,16 @@ st.markdown("""
         background-color: #ffffff;
     }
     
-    /* Título centrado con tipografía elegante tipo Serif */
+    /* Título centrado con tipografía elegante tipo Serif y tamaño más grande */
     .titulo-centrado {
         color: #6c1d45;
         font-family: 'Georgia', 'Times New Roman', serif;
         font-weight: normal;
         text-align: center;
-        font-size: 2.3rem;
-        margin-top: 20px;
-        margin-bottom: 5px;
-    }
-    
-    /* Subtítulo centrado */
-    .subtitulo-centrado {
-        color: #6c1d45;
-        font-family: 'Georgia', 'Times New Roman', serif;
-        text-align: center;
-        font-size: 1.5rem;
+        font-size: 2.8rem; /* Letra más grande para el título principal */
+        margin-top: 25px;
         margin-bottom: 25px;
+        line-height: 1.2;
     }
     
     /* Estilos para encabezados de secciones */
@@ -52,9 +44,8 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# Títulos maquetados con HTML para poder centrarlos y aplicar la fuente Serif
-st.markdown('<div class="titulo-centrado">Análisis de Datos</div>', unsafe_allow_html=True)
-st.markdown('<div class="subtitulo-centrado">Prueba Chi-cuadrado</div>', unsafe_allow_html=True)
+# Título maquetado con HTML para poder centrarlo, agrandarlo y aplicar la fuente Serif
+st.markdown('<div class="titulo-centrado">Aplicación: Prueba de Hipótesis Chi-cuadrada ($\chi^2$)</div>', unsafe_allow_html=True)
 st.write("Calculadora universal basada en frecuencias observadas ($f_o$) y esperadas ($f_e$).")
 
 # --- SELECCIÓN DEL TAMAÑO DE LA TABLA ---
@@ -171,5 +162,3 @@ else:
         ax.spines['bottom'].set_color('#cccccc')
 
         st.pyplot(fig)
-
-    
