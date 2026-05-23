@@ -139,7 +139,7 @@ else:
             st.success(f"No se rechaza la Hipótesis Nula ($H_0$). El valor calculado ({chi2_calculado:.2f}) es MENOR o IGUAL que el valor crítico de la tabla ({valor_critico:.2f}). Las variables son independientes.")
 
         # Grafica de la distribución
-        st.markdown('<div class="subtitulo-centrado">Visualización Gráfica</div>', unsafe_allow_html=True)
+        st.markdown('<div class="subtitulo-centrado">Visualización de la Gráfica</div>', unsafe_allow_html=True)
         limite_x = float(max(valor_critico + 5, chi2_calculado + 5, 15))
         x = np.linspace(0, limite_x, 1000)
         y = chi2.pdf(x, gl)
