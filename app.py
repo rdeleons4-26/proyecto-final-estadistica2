@@ -10,7 +10,7 @@ st.markdown("""
     /* Importar tipografía*/
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap');
 
-    /* Fondo blanco puro */
+    /* Fondo */
     .main {
         background-color: #ffffff;
     }
@@ -93,7 +93,6 @@ for i in range(int(filas)):
         valores_fila.append(val)
     datos_fo.append(valores_fila)
 
-# Convertir a matriz de Numpy
 fo = np.array(datos_fo)
 
 if fo.sum() <= 0:
@@ -120,7 +119,7 @@ else:
         # 3. Grados de libertad
         gl = (int(columnas) - 1) * (int(filas) - 1)
 
-        # 4. Búsqueda del Valor Crítico
+        # 4. Búsqueda del valor critico
         valor_critico = chi2.ppf(1 - alfa, gl)
 
         #Mostrar resultados
