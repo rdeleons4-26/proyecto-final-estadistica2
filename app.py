@@ -164,8 +164,6 @@ else:
         ax.set_xlabel("Valor de $\chi^2$")
         ax.set_ylabel("Densidad de Probabilidad")
         ax.legend(facecolor='white', frameon=True)
-        
-        # Remover bordes superior y derecho para un minimalismo total
         ax.spines['top'].set_visible(False)
         ax.spines['right'].set_visible(False)
         ax.spines['left'].set_color('#cccccc')
