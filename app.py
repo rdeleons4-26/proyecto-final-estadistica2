@@ -40,7 +40,7 @@ st.markdown("""
     /* Estilos para encabezados */
     h3 {
         color: #6c1d45;
-        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        font-family: 'Helvetica Neue', Helvetica, Times New Roman, sans-serif;
         font-weight: 500;
     }
     
