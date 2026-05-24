@@ -101,7 +101,7 @@ else:
     if np.any(totales_filas == 0) or np.any(totales_columnas == 0):
         st.error("Error: No puedes tener una fila o columna completa con valores en cero.")
     else:
-        # 1. Calcular frecuencias esperadas
+        #Calcular frecuencias esperadas
         fe = np.outer(totales_filas, totales_columnas) / n
 
         #Mostrar tabla de frecuencias esperadas
@@ -118,7 +118,7 @@ else:
             division_chi = np.where(fe == 0, 0, division_chi)
             chi2_calculado = np.sum(division_chi)
 
-        # Grados de libertad
+        #Grados de libertad
         gl = (int(columnas) - 1) * (int(filas) - 1)
 
         #Valor Crítico
@@ -132,7 +132,7 @@ else:
         c2.metric("Valor Crítico (Tabla)", f"{valor_critico:.2f}")
         c3.metric("Grados de Libertad ($gl$)", f"{gl}")
 
-        # Conclusión de la hipótesis
+        #Conclusión de la hipótesis
         st.subheader("4. Conclusión de la Hipótesis")
         if chi2_calculado > valor_critico:
             st.error(f"Se rechaza la Hipótesis Nula ($H_0$). El valor calculado ({chi2_calculado:.2f}) es MAYOR que el valor crítico de la tabla ({valor_critico:.2f}). Las variables NO son independientes.")
@@ -151,10 +151,10 @@ else:
         fig.patch.set_facecolor('#ffffff')
         ax.set_facecolor('#ffffff')
         
-        # Curva
+        #Curva
         ax.plot(x, y, color='#6c1d45', lw=2.5, label=f'Curva de Distribución $\chi^2$ (gl = {gl})')
 
-        # Región de rechazo
+        #Región de rechazo
         x_rechazo = np.linspace(valor_critico, limite_x, 100)
         ax.fill_between(x_rechazo, chi2.pdf(x_rechazo, gl), color='#ebd5dd', alpha=0.8, label=f'Región de Rechazo ($\\alpha$ = {alfa})')
 
