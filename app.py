@@ -12,7 +12,7 @@ st.markdown("""
 
     /* Fondo */
     .main {
-        background-color: #F7F7F2;
+        background-color: #F5F4F0;
     }
     
     /* Título principal*/
