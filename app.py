@@ -27,7 +27,7 @@ st.markdown("""
         line-height: 1.2;
     }
 
-    /* Subtítulos */
+    /* Subtítulos*/
     .subtitulo-centrado {
         color: #6c1d45;
         font-family: 'Playfair Display', 'Didot', 'Georgia', serif;
@@ -37,14 +37,14 @@ st.markdown("""
         margin-bottom: 20px;
     }
     
-    /* Estilos para encabezados */
+    /* Estilos para encabezados de bloques de configuración */
     h3 {
         color: #6c1d45;
-        font-family: 'Helvetica Neue', Helvetica, Times New Roman, sans-serif;
-        font-weight: 600;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        font-weight: 500;
     }
     
-    /* Tarjetas de resultados */
+    /* Tarjetas de resultados métricos ultra limpias */
     .stMetric {
         background-color: #ffffff;
         padding: 12px;
@@ -55,11 +55,11 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# Título 
-st.markdown('<div class="titulo-premium">Prueba de Hipótesis con Chi-cuadrada (&chi;&sup2;)</div>', unsafe_allow_html=True)
+# Título de alta gama maquetado en HTML puro
+st.markdown('<div class="titulo-premium">Prueba de Hipótesis Chi-cuadrada (&chi;&sup2;)</div>', unsafe_allow_html=True)
 st.write("Calculadora universal basada en frecuencias observadas ($f_o$) y esperadas ($f_e$).")
 
-# Selección del tamaño de la tabla
+# --- SELECCIÓN DEL TAMAÑO DE LA TABLA ---
 st.subheader("Configuración del Cuadro de Contingencia")
 
 col_dim1, col_dim2 = st.columns(2)
@@ -68,10 +68,10 @@ with col_dim1:
 with col_dim2:
     columnas = st.number_input("Número de Columnas", min_value=2, max_value=10, value=2, step=1)
 
-# Selector dinámico para el nivel de significancia
+# Selector dinámico para el Nivel de Significancia
 alfa = st.slider("Selecciona el Nivel de Significancia ($\\alpha$)", min_value=0.01, max_value=0.10, value=0.05, step=0.01)
 
-# Entrada de datos dinamica
+# --- ENTRADA DE DATOS DINÁMICA ---
 st.subheader("1. Ingrese las Frecuencias Observadas ($f_o$)")
 st.write("Escribe los valores de tu tabla en las casillas de abajo:")
 
@@ -93,8 +93,10 @@ for i in range(int(filas)):
         valores_fila.append(val)
     datos_fo.append(valores_fila)
 
+# Convertir a matriz de Numpy
 fo = np.array(datos_fo)
 
+# --- PROCESAMIENTO MATEMÁTICO SEGURO ---
 if fo.sum() <= 0:
     st.warning("Por favor introduce valores mayores a cero en la tabla para realizar los cálculos.")
 else:
@@ -108,6 +110,13 @@ else:
         # 1. Calcular frecuencias esperadas
         fe = np.outer(totales_filas, totales_columnas) / n
 
+        # --- MOSTRAR TABLA DE FRECUENCIAS ESPERADAS ---
+        st.subheader("2. Frecuencias Esperadas Calculadas ($f_e$)")
+        st.write("Valores teóricos calculados automáticamente bajo el supuesto de independencia:")
+        
+        # Mostrar matriz formateada de forma nativa y elegante
+        st.dataframe(fe, column_config={str(j): f"Col {j+1}" for j in range(int(columnas))}, use_container_width=True)
+
         # 2. Aplicar la fórmula universal evitando divisiones por cero
         with np.errstate(divide='ignore', invalid='ignore'):
             numerador = (fo - fe) ** 2
@@ -119,52 +128,56 @@ else:
         # 3. Grados de libertad
         gl = (int(columnas) - 1) * (int(filas) - 1)
 
-        # 4. Búsqueda del valor critico
+        # 4. Búsqueda del Valor Crítico
         valor_critico = chi2.ppf(1 - alfa, gl)
 
-        #Mostrar resultados
-        st.subheader("2. Resultados de la prueba de Hipótesis")
+        # --- MOSTRAR RESULTADOS ---
+        st.subheader("3. Resultados del Análisis Estadístico")
 
         c1, c2, c3 = st.columns(3)
         c1.metric("$\chi^2$ Calculado", f"{chi2_calculado:.2f}")
         c2.metric("Valor Crítico (Tabla)", f"{valor_critico:.2f}")
         c3.metric("Grados de Libertad ($gl$)", f"{gl}")
 
-        #Conclusión de la hipótesis
-        st.subheader("3. Conclusión de la Hipótesis")
+        # Conclusión automática sin emojis
+        st.subheader("4. Conclusión de la Hipótesis")
         if chi2_calculado > valor_critico:
             st.error(f"Se rechaza la Hipótesis Nula ($H_0$). El valor calculado ({chi2_calculado:.2f}) es MAYOR que el valor crítico de la tabla ({valor_critico:.2f}). Las variables NO son independientes.")
         else:
             st.success(f"No se rechaza la Hipótesis Nula ($H_0$). El valor calculado ({chi2_calculado:.2f}) es MENOR o IGUAL que el valor crítico de la tabla ({valor_critico:.2f}). Las variables son independientes.")
 
-        # Grafica de la distribución
-        st.markdown('<div class="subtitulo-centrado">Visualización de la Gráfica</div>', unsafe_allow_html=True)
+        # --- GRÁFICA DE LA DISTRIBUCIÓN ---
+        st.markdown('<div class="subtitulo-centrado">Visualización Gráfica</div>', unsafe_allow_html=True)
         limite_x = float(max(valor_critico + 5, chi2_calculado + 5, 15))
         x = np.linspace(0, limite_x, 1000)
         y = chi2.pdf(x, gl)
 
-        # Diseño de la gráfica
+        # Diseño limpio de la gráfica
         plt.style.use('default')
         fig, ax = plt.subplots(figsize=(10, 4))
         fig.patch.set_facecolor('#ffffff')
         ax.set_facecolor('#ffffff')
         
-        # Curva
+        # Curva en el tono ciruela/vino de la marca
         ax.plot(x, y, color='#6c1d45', lw=2.5, label=f'Curva de Distribución $\chi^2$ (gl = {gl})')
 
-        # Región de rechazo
+        # Región de rechazo con el rosa empolvado suave del fondo de la imagen
         x_rechazo = np.linspace(valor_critico, limite_x, 100)
         ax.fill_between(x_rechazo, chi2.pdf(x_rechazo, gl), color='#ebd5dd', alpha=0.8, label=f'Región de Rechazo ($\\alpha$ = {alfa})')
 
-        # Chi calculado
+        # Tu Chi calculado en una línea discontinua color gris elegante
         ax.axvline(chi2_calculado, color='#555555', linestyle='--', lw=2, label=f'Tu $\chi^2$ Calculado = {chi2_calculado:.2f}')
 
+        ax.set_title("Ubicación del Estadístico y Región de Rechazo", fontsize=12, color='#6c1d45', family='serif')
         ax.set_xlabel("Valor de $\chi^2$")
         ax.set_ylabel("Densidad de Probabilidad")
         ax.legend(facecolor='white', frameon=True)
+        
+        # Remover bordes superior y derecho para un minimalismo total
         ax.spines['top'].set_visible(False)
         ax.spines['right'].set_visible(False)
         ax.spines['left'].set_color('#cccccc')
         ax.spines['bottom'].set_color('#cccccc')
 
         st.pyplot(fig)
+
