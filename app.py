@@ -171,3 +171,29 @@ else:
 
         st.pyplot(fig)
 
+        # (Aquí está el código de tu gráfica que ya funciona perfectamente...)
+        ax.spines['left'].set_color('#cccccc')
+        ax.spines['bottom'].set_color('#cccccc')
+
+        st.pyplot(fig)
+
+#pie de página 
+st.markdown("""
+    <style>
+    .footer-premium {
+        text-align: center;
+        font-family: 'Playfair Display', 'Didot', 'Georgia', serif;
+        font-size: 1.0rem;
+        color: #6c1d45;
+        font-style: italic;
+        margin-top: 50px;
+        border-top: 1px solid #f2ebef;
+        padding-top: 20px;
+        padding-bottom: 10px;
+    }
+    </style>
+    <div class="footer-premium">
+    Rita Shantal de León Sánchez &copy; 2026
+    </div>
+    """, unsafe_allow_html=True)
+
