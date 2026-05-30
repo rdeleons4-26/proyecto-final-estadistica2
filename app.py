@@ -171,14 +171,8 @@ else:
 
         st.pyplot(fig)
 
-        # (Aquí está el código de tu gráfica que ya funciona perfectamente...)
-        ax.spines['left'].set_color('#cccccc')
-        ax.spines['bottom'].set_color('#cccccc')
-
-        st.pyplot(fig)
-
-#pie de página 
-st.markdown("""
+    #pie de página 
+    st.markdown("""
     <style>
     .footer-premium {
         text-align: center;
